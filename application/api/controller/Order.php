@@ -230,7 +230,7 @@ class Order extends Api
      */
     public function orderdel(){
         $order_sn = $this->request->param('order_sn');
-        $order = Db::name('order')->where(['order_sn'=>$order_sn,'status'=>1])->find();
+        $order = Db::name('order')->where(['order_sn'=>$order_sn])->find();
         if($order){
             $re = Db::name('order')->where('order_sn',$order_sn)->update(['is_delete'=>1]);
             if($re){

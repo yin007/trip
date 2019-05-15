@@ -18,14 +18,9 @@ class Index extends Api
     protected $noNeedRight = ['*'];
 
     /**
-     * 首页
-     * @param string $city 地点名字
-     * @param int $shopid 出发地门店id
+     * banner图
      */
-    public function index()
-    {
-        $data = [];
-
+    public function banner(){
         //轮播图
         $banner = explode(',',System::value('bannerimages'));
         $arr = [];
@@ -35,6 +30,22 @@ class Index extends Api
 
         }
         $data['banner'] = $arr;
+        //公告
+        $announcement = Db::name('announcement')->select();
+        $data['announcement'] = $announcement;
+        $this->success('请求成功',$data);
+
+    }
+
+    /**
+     * 首页
+     * @param string $city 地点名字
+     * @param int $shopid 出发地门店id
+     */
+    public function index()
+    {
+        $data = [];
+
         //首页推荐设备
         $city = $this->request->param('city');
         $shopid = $this->request->param('shopid');
@@ -63,10 +74,7 @@ class Index extends Api
             $v['logoimage'] = Env::get("app.host").$v['logoimage'];
         }
         $data['equipment']= $equipment;
-
-        //公告
-        $announcement = Db::name('announcement')->select();
-        $data['announcement'] = $announcement;
+        
         $this->success('请求成功',$data);
     }
 
@@ -230,6 +238,9 @@ class Index extends Api
             $this->error('出发地和目的地不能为同一个地方',['code'=>204]);
         }
         $eq = Db::name('equipment')->where('id',$eid)->find();
+        if($eq['shop_id'] !== $start_shop){
+            $this->error('出发门店与商品领取门店不一致',null);
+        }
         if($eq['status'] !== 1){
             $this->error('该商品已下架',null);
         }

@@ -19,6 +19,7 @@ class Order extends Backend
      * @var \app\admin\model\Order
      */
     protected $model = null;
+    protected $searchFields = ['order_sn'];
 
     public function _initialize()
     {

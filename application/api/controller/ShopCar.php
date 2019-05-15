@@ -98,11 +98,11 @@ class ShopCar extends Api
      */
     public function car()
     {
-        $shopid = $this->request->param('shopid');
+//        $shopid = $this->request->param('shopid');
         $where = '';
-        if($shopid){
-            $where = 'a.shop_id = '.$shopid;
-        }
+//        if($shopid){
+//            $where = 'a.shop_id = '.$shopid;
+//        }
         $uid =  unlock_url($this->request->header("userid"));
         $re = Db::name('shopcar')
             ->alias('a')
@@ -172,9 +172,12 @@ class ShopCar extends Api
                 if($d['num'] > $e['stock']){
                     $this->error('购物车有商品库存不足',null);
                 }
-                if ($e['shop_id'] == $destination_shop) {
-                    $this->error('产品门店和目的地门店不能为同一个门店');
-                }
+//                if ($e['shop_id'] !== $start_shop) {
+//                    $this->error('产品门店和出发地门店不是同一个门店');
+//                }
+//                if ($e['shop_id'] == $destination_shop) {
+//                    $this->error('产品门店和目的地门店不能为同一个门店');
+//                }
                 //插入订单详情表
                 $data[]=[
                     'order_sn'=>$order_sn,
